@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday My Love</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(135deg,#fdfbfb,#f3f3f3);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:#444;
+}
+
+/* Container */
+.container{
+    width:90%;
+    max-width:700px;
+    height:200px;
+    position:relative;
+}
+
+.slide{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:100%;
+    text-align:center;
+
+    font-size:1.4rem;
+    opacity:0;
+    transition:opacity 1s ease;
+}
+
+.slide.active{
+    opacity:1;
+}
+
+/* Question Section */
+.question-box{
+    margin-top:30px;
+    display:none;
+}
+
+.question{
+    font-size:1.3rem;
+    margin-bottom:20px;
+}
+
+.btn-group{
+    position:relative;
+    height:100px;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    font-size:1rem;
+    cursor:pointer;
+    transition:all .3s ease;
+}
+
+.btn-yes{
+    background:#e8cfcf;
+    color:#444;
+}
+
+.btn-yes:hover{
+    background:#d8b6b6;
+}
+
+.btn-no{
+    background:#ddd;
+    color:#444;
+    position:absolute;
+}
+
+/* Wish Page */
+.wish{
+    display:none;
+    animation:fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+}
+
+/* Falling flowers */
+.flower{
+    position:fixed;
+    top:-10px;
+    font-size:20px;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .slide{ font-size:1.1rem; }
+    .question{ font-size:1.1rem; }
+}
+
+@media(max-width:430px){
+    .slide{ font-size:1rem; }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bg-music" loop>
+    <source src="Angel.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+    <div class="slide active" id="slide1">Chào bé iu, nay là sinh nhật bé iuu của anh 🎂</div>
+    <div class="slide" id="slide2">Rất vinh hạnh khi được gửi lời chúc sinh nhật tới em 💌</div>
+    <div class="slide" id="slide3">Hãy trả lời câu dưới đây để nghe lời chúc nhé ✨</div>
+
+    <div class="question-box" id="questionBox">
+        <div class="question">Em có yêu anh nhiều không? 💖</div>
+        <div class="btn-group">
+            <button class="btn-yes" onclick="showWish()">Có</button>
+            <button class="btn-no" id="noBtn">Không</button>
+        </div>
+    </div>
+
+    <div class="wish" id="wish">
+        <h2>Chúc mừng sinh nhật em yêu 🎉</h2>
+        <br>
+        <p>
+        Cảm ơn em đã xuất hiện trong cuộc đời anh.<br><br>
+        Mong em tuổi mới luôn xinh đẹp hơn, hạnh phúc hơn,<br>
+        và đặc biệt là luôn ở bên anh lâu thật lâu nhé 💕<br><br>
+        Dù tương lai có thế nào,<br>
+        anh luôn hy vọng em sẽ luôn được hạnh phúc những phút giây khi ở cạnh anh.
+        </p>
+    </div>
+
+</div>
+
+<script>
+
+/* Slide Animation */
+const slides = document.querySelectorAll(".slide");
+let current = 0;
+
+function nextSlide(){
+    slides[current].classList.remove("active");
+    current++;
+    if(current < slides.length){
+        slides[current].classList.add("active");
+    }else{
+        document.getElementById("questionBox").style.display="block";
+    }
+}
+
+setInterval(()=>{
+    if(current < slides.length){
+        nextSlide();
+    }
+},2700);
+
+
+/* Button No chạy trốn */
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseover", () => {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+});
+
+noBtn.addEventListener("pointerenter", moveButton);
+
+function moveButton() {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+const music = document.getElementById("bg-music");
+
+// phát khi người dùng click bất kỳ đâu lần đầu
+document.body.addEventListener("click", () => {
+    music.play().catch(() => {});
+}, { once: true });
+/* Show wish */
+function showWish(){
+    document.getElementById("questionBox").style.display="none";
+    document.getElementById("wish").style.display="block";
+}
+
+
+/* Falling Flowers */
+function createFlower(){
+    const flower = document.createElement("div");
+    flower.classList.add("flower");
+    flower.innerHTML="🌸";
+    flower.style.left=Math.random()*100+"vw";
+    flower.style.animationDuration = 5 + Math.random()*5 + "s";
+    document.body.appendChild(flower);
+
+    setTimeout(()=>flower.remove(),10000);
+}
+
+setInterval(createFlower,500);
+
+</script>
+
+</body>
+</html>
